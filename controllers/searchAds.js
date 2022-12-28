@@ -4,7 +4,7 @@ const { StatusCodes } = require('http-status-codes');
 const searchAds = async (req, res) => {
 	let data;
 	if (!req.query.search) {
-		// For the page intial reload
+		// For the page intial load
 		data = await Ads.aggregate([
 			{
 				$lookup: {
