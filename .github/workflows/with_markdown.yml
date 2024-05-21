@@ -26,6 +26,7 @@ jobs:
         uses: peter-evans/create-issue-from-file@v3
         with:
           title: '${{ github.event.pull_request.title }}  #${{github.event.pull_request.id}}'
+          content-filepath: '.github/ISSUE_TEMPLATE/pull_request_created.md'
           labels: |
             e2e
             test
