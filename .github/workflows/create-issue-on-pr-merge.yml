@@ -1,5 +1,5 @@
 name: Create Issue on PR Merge with UI-changes Label
-run-name: ${{ toJson(github.event.pull_request.labels) }} is testing out GitHub Actions 🚀
+run-name: ${{ toJson(github.event.pull_request.labels.name) }} is testing out GitHub Actions 🚀
 on:
   pull_request:
 
@@ -14,7 +14,7 @@ jobs:
       - name: Check for specific label
         run: |
           echo "Checking for the 'UI-changes' label..."
-          if contains(github.event.pull_request.labels.name, 'UI-changes') then
+          if contains(github.event.pull_request.labels.name, 'UI-changes'); then
             echo "Label 'UI-changes' found."
             echo "::set-output name=label_found::true"
           else
