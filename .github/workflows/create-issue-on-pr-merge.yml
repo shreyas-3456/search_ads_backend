@@ -16,9 +16,16 @@ jobs:
         id: check_label
         run: |
           echo "Checking for 'UI-changes' label..."
-          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'UI-changes') }}" != "true" ]]; then
-            echo "Label 'UI-changes' not found. Exiting."
-            exit 0
+          found=false
+          for label in "${{ github.event.pull_request.labels.*.name }}"; do
+              if [[ "$label" == "UI-changes" ]]; then
+                  found=true
+                  break
+              fi
+          done
+          if [[ "$found" == "false" ]]; then
+              echo "Label 'UI-changes' not found. Exiting."
+              exit 0
           fi
           echo "Label 'UI-changes' found. Continuing."
 
