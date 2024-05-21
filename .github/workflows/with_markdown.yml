@@ -12,16 +12,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Check for 'UI-changes' label
-        id: check_label
-        run: |
-          echo "Checking for 'UI-changes' label..."
-          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'UI-changes') }}" != "true" ]]; then
-            echo "Label 'UI-changes' not found. Exiting."
-            exit 0
-          fi
-          echo "Label 'UI-changes' found. Continuing."
-
       - name: Extract PR Details
         id: extract_pr_details
         run: |
