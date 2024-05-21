@@ -1,0 +1,44 @@
+name: Create Issue on PR
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  create-issue:
+    runs-on: self-hosted
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check for 'UI-changes' label
+        id: check_label
+        run: |
+          echo "Checking for 'UI-changes' label..."
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'UI-changes') }}" != "true" ]]; then
+            echo "Label 'UI-changes' not found. Exiting."
+            exit 0
+          fi
+          echo "Label 'UI-changes' found. Continuing."
+
+      - name: Extract PR Details
+        id: extract_pr_details
+        run: |
+          echo "::set-output name=title::Issue created due to merge PR: ${{ github.event.pull_request.title }}"
+          echo "::set-output name=body::"
+          echo "### Pull Request Details"
+          echo "**Title:** ${{ github.event.pull_request.title }}"
+          echo "**Description:** ${{ github.event.pull_request.body }}"
+          echo "**Files Changed:**"
+          git diff --name-only ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}
+
+      - name: Create GitHub Issue
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: ${{ steps.extract_pr_details.outputs.title }}
+          body: ${{ steps.extract_pr_details.outputs.body }}
+          labels: |
+            e2e
+            test
