@@ -14,7 +14,7 @@ jobs:
         run: |
           echo "Checking for the 'UI-changes' label..."
           echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-          if echo "${{ github.event.pull_request.labels.*.name }}" | grep -q "UI-changes"; then
+          if contains(github.event.pull_request.labels.*.name, 'UI-changes') then
             echo "::set-output name=label_found::true"
           else
             echo "::set-output name=label_found::false"
