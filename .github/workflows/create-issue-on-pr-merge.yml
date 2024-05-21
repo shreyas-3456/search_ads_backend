@@ -2,12 +2,12 @@ name: Create Issue on PR Merge with UI-changes Label
 
 on:
   pull_request:
-    types: [closed]
+    types: [open]
 
 jobs:
   create_issue:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == false
+    runs-on: self-hosted
     steps:
       - name: Check for specific label
         id: check_label
