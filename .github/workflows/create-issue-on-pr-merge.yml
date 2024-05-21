@@ -14,11 +14,32 @@ jobs:
 
       - name: Create GitHub Issue
         id: create_issue
-        uses: peter-evans/create-issue-from-file@v4
+        uses: actions/github-script@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'New Pull Request Created: ${{ github.event.pull_request.title }}'
-          content-filepath: '.github/ISSUE_TEMPLATE/pull_request_created.md'
-          labels: |
-            pull request
-            automated issue
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = `New Pull Request Created: ${context.payload.pull_request.title}`;
+            const body = `
+            ## Pull Request Created
+
+            A new pull request has been created.
+
+            - **PR Title**: ${context.payload.pull_request.title}
+            - **PR Link**: ${context.payload.pull_request.html_url}
+            - **Author**: ${context.payload.pull_request.user.login}
+
+            Please review the pull request and provide feedback.
+
+            ---
+            This issue was created automatically by a GitHub Action.
+            `;
+
+            const labels = ['pull request', 'automated issue'];
+
+            await github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: labels
+            });
