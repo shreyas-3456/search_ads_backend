@@ -31,7 +31,6 @@ jobs:
           echo "**Title:** ${{ github.event.pull_request.title }}"
           echo "**Description:** ${{ github.event.pull_request.body }}"
           echo "**Files Changed:**"
-          git diff --name-only ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}
 
       - name: Create GitHub Issue
         uses: peter-evans/create-issue-from-file@v4
