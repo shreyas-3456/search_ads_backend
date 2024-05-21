@@ -9,27 +9,19 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Check for specific label
-        id: check_label
-        run: |
-          echo "Checking for the 'UI-changes' label..."
-          echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-          if contains(github.event.pull_request.labels.*.name, 'UI-changes') then
-            echo "::set-output name=label_found::true"
-          else
-            echo "::set-output name=label_found::false"
-            echo "Label 'UI-changes' not found. Exiting."
-            exit 0
-          fi
-
       - name: Debug Labels
         run: |
           echo "Labels on the PR: ${{ toJson(github.event.pull_request.labels) }}"
 
-      - name: Create issue
-        if: steps.check_label.outputs.label_found == 'true'
-        uses: peter-evans/create-issue-from-file@v5
-        with:
-          title: 'A PR with UI-changes label was merged!'
-          content-filepath: .github/ISSUE_TEMPLATE/ui_changes_template.md
-          labels: 'UI-changes, test, e2e'
+      - name: Check for specific label
+        id: check_label
+        run: |
+          echo "Checking for the 'UI-changes' label..."
+          if contains(github.event.issue.labels.*.name, 'UI-changes') then
+            echo "Label 'UI-changes' found."
+            echo "::set-output name=label_found::true"
+          else
+            echo "Label 'UI-changes' not found. Exiting. Labels are  ${{ toJson(github.event.pull_request.labels) }}"
+            echo "::set-output name=label_found::false"
+            exit 0
+          fi
