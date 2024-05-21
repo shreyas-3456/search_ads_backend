@@ -29,7 +29,7 @@ jobs:
           script: |
             const title = '${{ steps.extract_pr_details.outputs.title }}';
             const body = '${{ steps.extract_pr_details.outputs.body }}';
-
+            console.log(script({github, context}))
             const issue = await github.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
