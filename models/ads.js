@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 module.exports = mongoose.model(
-	'ads',
-	new mongoose.Schema({}, { strict: false })
-);
+  'ads',
+  new mongoose.Schema({}, { strict: false })
+)
+//test
