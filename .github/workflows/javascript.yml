@@ -6,11 +6,11 @@ on:
 
 jobs:
   create-issue:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Extract PR Details
         id: extract_pr_details
@@ -23,10 +23,18 @@ jobs:
           echo "**Files Changed:**"
 
       - name: Create GitHub Issue
-        uses: peter-evans/create-issue-from-file@v2
+        uses: actions/github-script@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: ${{ steps.extract_pr_details.outputs.title }}
-          labels: |
-            e2e
-            test
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = '${{ steps.extract_pr_details.outputs.title }}';
+            const body = '${{ steps.extract_pr_details.outputs.body }}';
+
+            const issue = await github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['e2e', 'test'] // Add any labels you want here
+            });
+            console.log(`Created issue: ${issue.data.html_url}`);
