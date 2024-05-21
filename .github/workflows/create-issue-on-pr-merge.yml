@@ -1,5 +1,5 @@
 name: Create Issue on PR Merge with UI-changes Label
-run-name: ${{ toJson(github.event.pull_request.labels.name) }} is testing out GitHub Actions 🚀
+run-name: ${{ toJson(github.event.pull_request.labels.name) }} are labels
 on:
   pull_request:
 
