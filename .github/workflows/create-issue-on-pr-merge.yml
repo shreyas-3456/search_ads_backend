@@ -1,5 +1,4 @@
 name: Create Issue on PR Merge with UI-changes Label
-
 on:
   pull_request:
 
@@ -12,10 +11,9 @@ jobs:
           echo "Labels on the PR: ${{ toJson(github.event.pull_request.labels) }}"
 
       - name: Check for specific label
-        id: check_label
         run: |
           echo "Checking for the 'UI-changes' label..."
-          if contains(github.event.issue.labels.*.name, 'UI-changes') then
+          if contains(github.event.pull_request.labels.*.name, 'UI-changes') then
             echo "Label 'UI-changes' found."
             echo "::set-output name=label_found::true"
           else
