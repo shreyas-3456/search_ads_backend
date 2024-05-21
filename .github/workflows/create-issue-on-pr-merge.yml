@@ -1,30 +1,24 @@
-name: Create Issue on PR Merge with UI-changes Label
+name: Create Issue on PR
 
 on:
   pull_request:
-    types: [open]
+    types: [opened]
 
 jobs:
-  create_issue:
-    if: github.event.pull_request.merged == false
+  create-issue:
     runs-on: self-hosted
-    steps:
-      - name: Check for specific label
-        id: check_label
-        run: |
-          echo "Checking for the 'UI-changes' label..."
-          if echo "${{ github.event.pull_request.labels[*] }}" | grep -q "UI-changes"; then
-            echo "::set-output name=label_found::true"
-          else
-            echo "::set-output name=label_found::false"
-            echo "Label 'UI-changes' not found. Exiting."
-            exit 0
-          fi
 
-      - name: Create issue
-        if: steps.check_label.outputs.label_found == 'true'
-        uses: peter-evans/create-issue-from-file@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create GitHub Issue
+        id: create_issue
+        uses: peter-evans/create-issue-from-file@v4
         with:
-          title: 'A PR with UI-changes label was merged!'
-          content-filepath: .github/ISSUE_TEMPLATE/ui_changes_template.md
-          labels: 'test, e2e'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'New Pull Request Created: ${{ github.event.pull_request.title }}'
+          content-filepath: '.github/ISSUE_TEMPLATE/pull_request_created.md'
+          labels: |
+            pull request
+            automated issue
