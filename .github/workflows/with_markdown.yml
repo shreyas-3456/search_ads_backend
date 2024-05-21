@@ -10,7 +10,7 @@ jobs:
     if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Extract PR Details
         id: extract_pr_details
@@ -23,7 +23,7 @@ jobs:
           echo "**Files Changed:**"
 
       - name: Create GitHub Issue
-        uses: peter-evans/create-issue-from-file@v2
+        uses: peter-evans/create-issue-from-file@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: ${{ steps.extract_pr_details.outputs.title }}
