@@ -2,7 +2,7 @@ name: Create Issue on PR Merge with UI-changes Label
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened]
 
 jobs:
   create_issue:
