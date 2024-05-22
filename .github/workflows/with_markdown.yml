@@ -35,5 +35,5 @@ jobs:
         with:
           token: ${{ github.token }}
           title: Simple test issue by dacbd/create-issue-action@main
-          body: '#${{github.event.pull_request.id}}'
+          body: '#${{github.event.pull_request.number}}'
           label: e2e , test
