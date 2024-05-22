@@ -12,28 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Extract PR Details
-        id: extract_pr_details
-        run: |
-          echo "::set-output name=title::Issue created due to merge PR: ${{ github.event.pull_request.title }}"
-          echo "::set-output name=body::"
-          echo "### Pull Request Details"
-          echo "**Title:** ${{ github.event.pull_request.title }}"
-          echo "**Description:** ${{ github.event.pull_request.body }}"
-          echo "**Files Changed:**"
-
-      - name: Create GitHub Issue
-        uses: peter-evans/create-issue-from-file@v3
-        with:
-          title: '${{ github.event.pull_request.title }}  #${{github.event.pull_request.id}}'
-          content-filepath: '.github/ISSUE_TEMPLATE/pull_request_created.md'
-          labels: |
-            e2e
-            test
-      - name: create an issue
+      - name: Create GitHub Issue for UI-changes
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Simple test issue by dacbd/create-issue-action@main
+          title: 'Tests for ${{ github.event.pull_request.title }}'
           body: '#${{github.event.pull_request.number}}'
           labels: e2e , test
