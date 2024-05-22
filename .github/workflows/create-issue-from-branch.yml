@@ -16,6 +16,6 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: 'Tests for ${{ github.event.pull_request.title }}'
-          body: ${{github.event.pull_request.labels.*.name}}
+          title: 'Tests for ${{ github.event.pull_request.labels.*.name }}'
+          body: ${{contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
           labels: e2e , test
