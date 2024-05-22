@@ -1,13 +1,13 @@
 name: Create Issue on PR
+
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [closed]
 
 jobs:
   create-issue:
     runs-on: self-hosted
-    if: ${{!contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
+    if: ${{github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,8 +16,6 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: 'Tests for ${{ github.event.pull_request.labels.*.name }}'
-          body: ${{contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
+          title: 'Tests for ${{ github.event.pull_request.title }}'
+          body: '#${{github.event.pull_request.number}}'
           labels: e2e , test
-      - name: Log GitHub event payload
-        run: echo "${{github.event.pull_request.merged}}  ,  ${{github.event.pull_request.labels.*.name}}"
