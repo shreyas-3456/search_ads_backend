@@ -10,7 +10,6 @@ jobs:
     if: ${{github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
     steps:
       - name: Checkout code
-        run: echo "${{github.event.pull_request.merged}  ,  ${{github.event.pull_request.labels.*.name}}"
         uses: actions/checkout@v3
 
       - name: Create GitHub Issue for UI-changes
@@ -20,3 +19,5 @@ jobs:
           title: 'Tests for ${{ github.event.pull_request.labels.*.name }}'
           body: ${{contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
           labels: e2e , test
+      - name: Log GitHub event payload
+        run: echo "${{github.event.pull_request.merged}  ,  ${{github.event.pull_request.labels.*.name}}"
