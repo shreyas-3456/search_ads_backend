@@ -1,13 +1,13 @@
 name: Create Issue on PR
-
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - master
 
 jobs:
   create-issue:
     runs-on: self-hosted
-    if: ${{github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
+    if: ${{contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
