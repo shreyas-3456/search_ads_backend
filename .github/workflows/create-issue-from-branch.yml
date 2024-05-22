@@ -1,5 +1,7 @@
 name: Create Issue on PR
 on:
+  pull_request:
+    types: [closed]
   push:
     branches:
       - master
@@ -7,7 +9,7 @@ on:
 jobs:
   create-issue:
     runs-on: self-hosted
-    if: ${{!contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
+    if: ${{contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
