@@ -7,7 +7,7 @@ on:
 jobs:
   create-issue:
     runs-on: self-hosted
-    if: github.event.pull_request.merged == true
+    if: ${{github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'UI-change')}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
