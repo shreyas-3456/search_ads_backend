@@ -20,4 +20,4 @@ jobs:
           body: ${{contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
           labels: e2e , test
       - name: Log GitHub event payload
-        run: echo "${{github.event.pull_request.merged}  ,  ${{github.event.pull_request.labels.*.name}}"
+        run: echo "${{github.event.pull_request.merged}}  ,  ${{github.event.pull_request.labels.*.name}}"
