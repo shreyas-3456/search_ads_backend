@@ -17,5 +17,5 @@ jobs:
         with:
           token: ${{ github.token }}
           title: 'Tests for ${{ github.event.pull_request.title }}'
-          body: '#${{github.event.pull_request.number}}'
+          body: ${{github.event.pull_request.labels.*.name}}
           labels: e2e , test
