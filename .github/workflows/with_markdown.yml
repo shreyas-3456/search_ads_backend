@@ -1,13 +1,16 @@
-name: Create Issue on PR
+name: Create Test Issue when PR is merged
 
 on:
   pull_request:
     types: [closed]
+  push:
+    branches:
+      - testing-issue-action
 
 jobs:
   create-issue:
     runs-on: self-hosted
-    if: ${{github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'UI-changes')}}
+    if: ${{github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'Missing-test')}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
